@@ -4,7 +4,8 @@ local function Bypass()
     end
 end
 
-local function Fly()
+local function Fly(Status, S)
+    if Status ~= "ON" then return end
     if not game:GetService("Players").LocalPlayer.Character or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
     Instance.new("BodyVelocity").MaxForce = Vector3.new(math.huge, math.huge, math.huge)
     Instance.new("BodyVelocity").Velocity = Vector3.new(0, 0, 0)
@@ -12,22 +13,23 @@ local function Fly()
     game:GetService("RunService").RenderStepped:Connect(function()
         if not game:GetService("Players").LocalPlayer.Character or not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
         Instance.new("BodyVelocity").Velocity = Vector3.new(0, 0, 0) +
-            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) and game.Workspace.CurrentCamera.CFrame.LookVector * 50 or Vector3.new(0, 0, 0)) +
-            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) and -game.Workspace.CurrentCamera.CFrame.LookVector * 50 or Vector3.new(0, 0, 0)) +
-            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) and game.Workspace.CurrentCamera.CFrame.RightVector * 50 or Vector3.new(0, 0, 0)) +
-            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) and -game.Workspace.CurrentCamera.CFrame.RightVector * 50 or Vector3.new(0, 0, 0)) +
+            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.W) and game.Workspace.CurrentCamera.CFrame.LookVector * S or Vector3.new(0, 0, 0)) +
+            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.S) and -game.Workspace.CurrentCamera.CFrame.LookVector * S or Vector3.new(0, 0, 0)) +
+            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.D) and game.Workspace.CurrentCamera.CFrame.RightVector * S or Vector3.new(0, 0, 0)) +
+            (game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.A) and -game.Workspace.CurrentCamera.CFrame.RightVector * S or Vector3.new(0, 0, 0)) +
             (game:GetService("UserInputService").TouchEnabled and
              (function()
                 for _, input in pairs(game:GetService("UserInputService"):GetTouchInput()) do
-                    return (game.Workspace.CurrentCamera.CFrame.LookVector * (input.Position.Y - game.Workspace.CurrentCamera.ViewportSize.Y / 2).Unit * 50) +
-                           (game.Workspace.CurrentCamera.CFrame.RightVector * (input.Position.X - game.Workspace.CurrentCamera.ViewportSize.X / 2).Unit * 50)
+                    return (game.Workspace.CurrentCamera.CFrame.LookVector * (input.Position.Y - game.Workspace.CurrentCamera.ViewportSize.Y / 2).Unit * S) +
+                           (game.Workspace.CurrentCamera.CFrame.RightVector * (input.Position.X - game.Workspace.CurrentCamera.ViewportSize.X / 2).Unit * S)
                 end
                 return Vector3.new(0, 0, 0)
              end)() or Vector3.new(0, 0, 0))
     end)
 end
 
-local function NoClip()
+local function NoClip(Status)
+    if Status ~= "ON" then return end
     if not game:GetService("Players").LocalPlayer.Character then return end
     game:GetService("RunService").Stepped:Connect(function()
         if not game:GetService("Players").LocalPlayer.Character then return end
